@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Financial Risk Management</a>
+      </div>
+      <div>
+        <ul class="nav navbar-nav">
+          <li class="active dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Daily Change
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="active"><a href="">By Ticker</a></li>
+              <li><a href="/byQuality">By Quality</a></li>
+            </ul>
+          </li>
+          <li><a href="/riskByMaturity">Risk by Maturity</a></li>
+          <li><a href="/varChart">Historical P&L Chart</a></li>
+
+
+
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <h1><%= title %></h1>
+    <table class="table table-bordered table-striped">
+      <colgroup>
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+        <col style="width:10%">
+      </colgroup>
+
+      <thead>
+        <td></td>
+        <td colspan="3" class="info text-center"><strong>Opening Book</strong></td>
+        <td colspan="3" class="warning text-center"><strong>Closing Book</strong></td>
+        <td colspan="3" class="success text-center"><strong>Change</strong></td>
+      </thead>
+
+      <thead>
+        <td class="text-center"><strong>Ticker</strong></td>
+        <td class="text-center"><strong>Amount</strong></td><td class="text-center"><strong>Risk</strong></td><td class="text-center"><strong>LGD</strong></td>
+        <td class="text-center"><strong>Amount</strong></td><td class="text-center"><strong>Risk</strong></td><td class="text-center"><strong>LGD</strong></td>
+        <td class="text-center"><strong>Amount</strong></td><td class="text-center"><strong>Risk</strong></td><td class="text-center"><strong>LGD</strong></td>
+      </thead>
+
+        <% for(var i=0; i<content.length; i++) { %>
+        <tr>
+          <td align="center">
+            <%= content[i]["ticker"] %>
+          </td>
+          <td align="center">
+            <%= content[i]["openAmount"] %>
+          </td>
+          <td align="center">
+            <%= content[i]["openRisk"].toFixed(2) %>
+          </td>
+          <td align="center">
+            <%= content[i]["openLGD"] %>
+          </td>
+          <td align="center">
+            <%= content[i]["closeAmount"] %>
+          </td>
+          <td align="center">
+            <%= content[i]["closeRisk"].toFixed(2) %>
+          </td>
+          <td align="center">
+            <%= content[i]["closeLGD"] %>
+          </td>
+          <td align="center">
+            <%= content[i]["changeAmount"] %>
+          </td>
+          <td align="center">
+            <%= content[i]["changeRisk"].toFixed(2) %>
+          </td>
+          <td align="center">
+            <%= content[i]["changeLGD"] %>
+          </td>
+        </tr>
+        <% } %>
+    </table>
+
+    <table class="table table-bordered table-striped">
+      <colgroup>
+        <col style="width:20%">
+        <col style="width:20%">
+        <col style="width:20%">
+        <col style="width:20%">
+      </colgroup>
+      <thead>
+      <td class =".col-md-3"></td>
+      <td class="info text-center .col-md-3"><strong>Opening Book</strong></td>
+      <td class="warning text-center .col-md-3"><strong>Closing Book</strong></td>
+      <td class="success text-center .col-md-3"><strong>Change</strong></td>
+      </thead>
+
+      <tr>
+        <td align="center">
+          VaR - Credit(Spread)
+        </td>
+        <td align="center">
+          <%= vardata["openSpread"].toFixed(2) %>
+        </td>
+        <td align="center">
+          <%= vardata["closeSpread"].toFixed(2) %>
+        </td>
+        <td align="center">
+          <%= vardata["closeSpread"].toFixed(2) - vardata["openSpread"].toFixed(2) %>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          VaR - Rate(Yield)
+        </td>
+        <td align="center">
+          <%= vardata["openYield"].toFixed(2) %>
+        </td>
+        <td align="center">
+          <%= vardata["closeYield"].toFixed(2) %>
+        </td>
+        <td align="center">
+          <%= (vardata["closeYield"] - vardata["openYield"]).toFixed(2) %>
+        </td>
+      </tr>
+      <tr>
+        <td align="center">
+          VaR - Total
+        </td>
+        <td align="center">
+          <%= vardata["openVar"].toFixed(2) %>
+        </td>
+        <td align="center">
+          <%= vardata["closeVar"].toFixed(2) %>
+        </td>
+        <td align="center">
+          <%= (vardata["closeVar"] - vardata["openVar"]).toFixed(2) %>
+        </td>
+      </tr>
+
+
+    </table>
+    <div class="alert alert-success" role="alert">
+      <strong>Real Time:</strong> <%= time["realTime"] %> milliseconds &nbsp;&nbsp;&nbsp;&nbsp;
+      <strong>User Time:</strong> <%= time["userTime"] %> milliseconds &nbsp;&nbsp;&nbsp;&nbsp;
+      <strong>System Time:</strong> <%= time["systemTime"] %> milliseconds
+    </div>
+  </body>
+</html>

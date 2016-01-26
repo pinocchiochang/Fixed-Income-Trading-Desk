@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <script src="/javascripts/Chart.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <!-- Bootstrap -->
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="/javascripts/jquery-2.1.4.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">Financial Risk Management</a>
+    </div>
+    <div>
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Daily Change
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/">By Ticker</a></li>
+                    <li><a href="/byQuality">By Quality</a></li>
+                </ul>
+            </li>
+            <li><a href="/riskByMaturity">Risk by Maturity</a></li>
+            <li class="active"><a href="/varChart">Historical P&L Chart</a></li>
+
+        </ul>
+    </div>
+</nav>
+
+
+<div align="center">
+    <canvas id="canvas" height="200" width="400"  align="center"></canvas>
+</div>
+
+<script>
+
+    var barChartData = {
+        labels : ["<%= labels[0].toString() %>", "<%= labels[1].toString() %>",
+                  "<%= labels[2].toString() %>", "<%= labels[3].toString() %>",
+                  "<%= labels[4].toString() %>", "<%= labels[5].toString() %>",
+                  "<%= labels[6].toString() %>", "<%= labels[7].toString() %>"],
+        datasets : [
+            {
+                barStrokeWidth : 1,
+                //Number - Spacing between each of the X value sets
+                barValueSpacing : 10,
+                fillColor: "rgba(151,187,205,0.5)",
+                strokeColor: "rgba(151,187,205,0.8)",
+                highlightFill: "rgba(151,187,205,0.75)",
+                highlightStroke: "rgba(151,187,205,1)",
+                data : [<%= data.toString() %>]
+            }
+        ]
+    };
+
+    window.onload = function(){
+        var ctx = document.getElementById("canvas").getContext("2d");
+        window.myBar = new Chart(ctx).Bar(barChartData, {
+            responsive : true
+        });
+
+    }
+
+
+
+</script>
+
+
+
+</body>
+</html>
+
